@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences stamp="15">
+	<com.4d>
+		<deployment>
+			<options/>
+		</deployment>
+		<web>
+			<standalone_server>
+				<configuration automatic_session_management="true" https_port_number="8843" port_number="8880" publish_at_startup="true" session_mode="3">
+					<hosts>
+						<host home_page="index.html" id="0" name="0"/>
+					</hosts>
+				</configuration>
+				<webservices>
+					<server allow_requests="true" name="A_WebService"/>
+				</webservices>
+				<options>
+					<keep_alive requests_number="100"/>
+					<cache cache_max_size="524288"/>
+				</options>
+				<rest launch_at_startup="true"/>
+				<log tokens=""/>
+			</standalone_server>
+			<remote>
+				<configuration allow_ssl="false" automatic_session_management="true" https_port_number="8443" port_number="8080" session_mode="3">
+					<hosts>
+						<host home_page="index.html" id="default"/>
+					</hosts>
+				</configuration>
+			</remote>
+		</web>
+		<compiler>
+			<options compilation_path="3" fat_binary="true" target="all"/>
+			<typage default_for_button="2"/>
+			<method_suffix arrays="" interprocess_arrays="" interprocess_variables="" methods="" variables=""/>
+		</compiler>
+		<interface>
+			<shortcuts>
+				<accept_input_form alt="false" command="false" ctrl="false" key_code="0" shift="false"/>
+				<cancel_input_form alt="false" command="false" ctrl="false" key_code="0" shift="false"/>
+				<add_subform alt="false" command="false" ctrl="false" key_code="0" shift="false"/>
+			</shortcuts>
+		</interface>
+		<server>
+			<network>
+				<options publication_name="4D_Doc" publication_port="8858"/>
+				<sso spn=""/>
+				<client_server use_encryption="false"/>
+			</network>
+			<ip_config>
+				<allow_deny_table>
+					<allow_deny address="*" allow="true"/>
+				</allow_deny_table>
+			</ip_config>
+		</server>
+		<sql>
+			<publication port_number="8857"/>
+		</sql>
+		<php ip_address="127.0.0.1" port_number="8002"/>
+		<general execute_host_database_event="true"/>
+		<database>
+			<cache flush_buffer_delay="20s"/>
+			<misc standard_xpath="false"/>
+		</database>
+	</com.4d>
+</preferences>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings-import-export char_display_format="decimal" encoding="UTF-8" file_path="Macintosh HD:Users:vincentdelachaux:Desktop:4DDoc:Exports:commands.txt" format="text" platform="mac" table_no="1" table_name="commands">
+	<text_settings delimiter_field="9" delimiter_record="13" with_column_title="false" with_bom="false"/>
+	<field field_no="1" kind="int32" table_no="1"/>
+	<field field_no="2" kind="alpha" table_no="1"/>
+	<field field_no="3" kind="boolean" table_no="1"/>
+	<field field_no="4" kind="alpha" table_no="1"/>
+	<xml_settings export_xsl_mode="none"/>
+</settings-import-export>

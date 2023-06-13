@@ -1,0 +1,52 @@
+{
+	"Forms": {
+		"forms": [
+			"[commands]Input",
+			"[commands]Output",
+			"[constants]Input",
+			"[constants]Output",
+			"[obsoletes]Input",
+			"[obsoletes]Output"
+		]
+	},
+	"lib": {
+		"groups": [
+			"str",
+			"xml (thread-safe)"
+		]
+	},
+	"str": {
+		"methods": [
+			"COMPILER_str",
+			"str_trim",
+			"str_trimLeading",
+			"str_trimTrailing"
+		]
+	},
+	"Structure": {
+		"groups": [
+			"Forms",
+			"Tables"
+		]
+	},
+	"Tables": {
+		"tables": [
+			"commands",
+			"constants",
+			"obsoletes"
+		]
+	},
+	"xml (thread-safe)": {
+		"methods": [
+			"COMPILER_xml",
+			"xml_attributes",
+			"xml_elementToObject",
+			"xml_encode",
+			"xml_fileToObject",
+			"xml_findByName",
+			"xml_NO_ERROR",
+			"xml_refToObject"
+		]
+	},
+	"trash": {}
+}

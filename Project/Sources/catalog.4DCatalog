@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE base SYSTEM "http://www.4d.com/dtd/2007/base.dtd" >
+<base name="4D-Doc" uuid="7C344FC24CBF40B8AA02383210634DB5" collation_locale="en">
+	<schema name="DEFAULT_SCHEMA"/>
+	<table name="commands" uuid="4D7DEA6B29F64F20AA9E73B7C0407CF7" id="1">
+		<field name="ID" uuid="9C6D636046FC42A5A1D47D41A3EF24FD" type="4" unique="true" not_null="true" id="1">
+			<field_extra position="1"/>
+		</field>
+		<field name="name" uuid="6C0D155B07534B37BB0E4D1FC5D927C8" type="10" limiting_length="255" never_null="true" id="2">
+			<field_extra position="3"/>
+		</field>
+		<field name="threadsafe" uuid="BC5A5ABFE40043B3A3CA647693B1BC6F" type="1" never_null="true" id="3">
+			<field_extra position="7"/>
+		</field>
+		<field name="theme" uuid="1E9A10E3D5C14F3BB4A91D9E34EF39E9" type="10" limiting_length="255" never_null="true" id="4">
+			<field_extra position="6"/>
+		</field>
+		<field name="syntax" uuid="91E5856949B04B608E8EFD4411A83C1C" type="10" limiting_length="255" never_null="true" id="5">
+			<field_extra position="4"/>
+		</field>
+		<field name="description" uuid="551851DE65DC41E2AFE16D3ADFB56052" type="10" never_null="true" id="6">
+			<field_extra position="5"/>
+		</field>
+		<field name="version" uuid="25E6E6B7707B4D2690402D165135B13C" type="10" limiting_length="255" never_null="true" id="7"/>
+		<field name="icon" uuid="053F3285F06940C787D2704AEB4F0B0A" type="12" never_null="true" id="8"/>
+		<field name="comment" uuid="CF360F728ACA41E99A40C64CC8D5B37F" type="10" never_null="true" id="9"/>
+		<primary_key field_name="ID" field_uuid="9C6D636046FC42A5A1D47D41A3EF24FD"/>
+		<table_extra input_form="Input" output_form="Output">
+			<editor_table_info displayable_fields_count="15">
+				<color red="255" green="255" blue="255" alpha="0"/>
+				<coordinates left="40" top="40" width="148.45703125" height="371.96875"/>
+			</editor_table_info>
+		</table_extra>
+	</table>
+	<table name="obsoletes" uuid="245D637CE82D46D3A27F08FBD883861F" id="2">
+		<field name="ID" uuid="565443FF00B74AC4851F3C714C2D31AF" type="4" unique="true" not_null="true" id="1">
+			<field_extra position="1"/>
+		</field>
+		<field name="name" uuid="EA291A4307EB4554B0488BAF1CB1E5DE" type="10" limiting_length="255" never_null="true" id="3">
+			<field_extra position="3"/>
+		</field>
+		<field name="syntax" uuid="67FA76D58BD54EC2B6AAD6B0A9F20F9F" type="10" limiting_length="255" never_null="true" id="4">
+			<field_extra position="4"/>
+		</field>
+		<field name="description" uuid="E7E547BAB39C48AFABC9C753A497933E" type="10" never_null="true" id="5">
+			<field_extra position="5"/>
+		</field>
+		<field name="theme" uuid="054AC6738CD54AF6822967FB0706BF2D" type="10" limiting_length="255" never_null="true" id="6">
+			<field_extra position="6"/>
+		</field>
+		<primary_key field_name="ID" field_uuid="565443FF00B74AC4851F3C714C2D31AF"/>
+		<table_extra input_form="Input" output_form="Output">
+			<editor_table_info fields_ordering="2" displayable_fields_count="13">
+				<color red="255" green="255" blue="255" alpha="0"/>
+				<coordinates left="213.5" top="42.31640625" width="134.078125" height="330.1640625"/>
+			</editor_table_info>
+		</table_extra>
+	</table>
+	<table name="constants" uuid="1F7BF1EE6FA04F4B891675D73154FFBF" id="3" prevent_journaling="true">
+		<field name="ID" uuid="4FA41D5BCA4643E58D70D7D77CEEF333" type="10" limiting_length="255" unique="true" not_null="true" id="1"/>
+		<field name="name" uuid="24E4D35CAC7F4AF1AB7259055148FFE9" type="10" limiting_length="255" never_null="true" id="2"/>
+		<field name="theme" uuid="6D3DC5CE89134676A005D95467A094FA" type="10" limiting_length="255" never_null="true" id="3"/>
+		<field name="value" uuid="B2DC1DB59C2A4FA6A08588B8C5B4AE9C" type="10" limiting_length="255" never_null="true" id="4"/>
+		<field name="obsolete" uuid="5176A22299064498AA5F0951D599E9AD" type="1" never_null="true" id="5"/>
+		<primary_key field_name="ID" field_uuid="4FA41D5BCA4643E58D70D7D77CEEF333"/>
+		<table_extra input_form="Input" output_form="Output">
+			<editor_table_info displayable_fields_count="13">
+				<color red="255" green="255" blue="255" alpha="0"/>
+				<coordinates left="361.26953125" top="43.32421875" width="158.4921875" height="314.6328125"/>
+			</editor_table_info>
+		</table_extra>
+	</table>
+	<index kind="regular" unique_keys="true" uuid="0C6B400B61444D84A52AF1D5491081AA" type="7">
+		<field_ref uuid="9C6D636046FC42A5A1D47D41A3EF24FD" name="ID">
+			<table_ref uuid="4D7DEA6B29F64F20AA9E73B7C0407CF7" name="commands"/>
+		</field_ref>
+	</index>
+	<index kind="regular" unique_keys="true" uuid="CE856A2944924B658A43D8160DBAD68E" type="1">
+		<field_ref uuid="4FA41D5BCA4643E58D70D7D77CEEF333" name="ID">
+			<table_ref uuid="1F7BF1EE6FA04F4B891675D73154FFBF" name="constants"/>
+		</field_ref>
+	</index>
+	<index kind="regular" uuid="D6901597041143C6BE640700FFB8EB5F" type="7">
+		<field_ref uuid="6C0D155B07534B37BB0E4D1FC5D927C8" name="name">
+			<table_ref uuid="4D7DEA6B29F64F20AA9E73B7C0407CF7" name="commands"/>
+		</field_ref>
+	</index>
+	<index kind="regular" unique_keys="true" uuid="E4753B37F66D47D4A9D248872E98E917" type="1">
+		<field_ref uuid="565443FF00B74AC4851F3C714C2D31AF" name="ID">
+			<table_ref uuid="245D637CE82D46D3A27F08FBD883861F" name="obsoletes"/>
+		</field_ref>
+	</index>
+	<base_extra __stringCompHash="icu:72.1.0" __keywordBuildingHash="icu:72.1.0" package_name="4D_Doc" structure_file_name="4D_Doc" data_file_path=":4D_Doc.4DD">
+		<journal_file journal_file_enabled="false"/>
+	</base_extra>
+</base>
