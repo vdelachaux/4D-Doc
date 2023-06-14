@@ -1,73 +1,56 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project method : update_constants
-// Database: 4D_Doc
+// Database: 4D-Doc
 // ID[17B494E8E77D403E8D2F6A2969A148DD]
 // Created #20-6-2018 by Vincent de Lachaux
 // ----------------------------------------------------
-var $intl; $name : Text
-var $indx : Integer
-var $ds_; $es; $group; $o; $value : Object
-var $constants; $groups; $themes; $values : Collection
+var $theme : Text
+var $group; $k : Object
+var $constants; $themes : Collection
+var $es; $sel : 4D:C1709.EntitySelection
+var $fileConstants; $fileThemes : 4D:C1709.Folder
 
-// ----------------------------------------------------
-$constants:=New collection:C1472
+$constants:=[]
 
-$intl:=Get 4D folder:C485(-1)+"en.lproj"+Folder separator:K24:12+"4D_ConstantsEN.xlf"
+$es:=ds:C1482.constants.all()
 
-// ----------------------------------------------------
-If (Asserted:C1132(Test path name:C476($intl)=Is a document:K24:1; "file not found"))
+$fileConstants:=Folder:C1567(Get 4D folder:C485(-1); fk platform path:K87:2).file("en.lproj/4D_ConstantsEN.xlf")
+$fileThemes:=Folder:C1567(Get 4D folder:C485(-1); fk platform path:K87:2).file("en.lproj/4D_ConstantsThemesEN.xlf")
+
+$themes:=xml_fileToObject($fileThemes.platformPath).value.xliff.file.body.group["trans-unit"]
+
+For each ($group; xml_fileToObject($fileConstants.platformPath).value.xliff.file.body.group; 1)
 	
-	$o:=xml_fileToObject($intl)
+	// Get the theme label
+	$theme:=$themes.query("resname = :1"; $group["d4:groupName"]).pop().source.$
 	
-	If ($o.success)
+	// Get the constants
+	For each ($k; $group["trans-unit"].extract("source.$"; "name"; "d4:value"; "value"; "id"; "id"))
 		
-		$groups:=$o.value.xliff.file.body.group
-		
-		$themes:=$groups[0]["trans-unit"].extract("id"; "id"; "target.$"; "name")
-		
-		For each ($group; $groups; 1)
+		If ($k.name=Null:C1517)
 			
-			// Get the theme label
-			$indx:=$themes.extract("id").indexOf($group["d4:groupID"])
+			// Deleted / Obfuscated
+			$sel:=$es.query("ID = :1"; $k.id)
 			
-			If ($indx#-1)
+			If ($sel.length>0)
 				
-				$name:=$themes[$indx].name
+				$sel.drop()
 				
 			End if 
 			
-			// Get the constants
-			$values:=$group["trans-unit"].extract("target.$"; "name"; "d4:value"; "value"; "id"; "ID")
+		Else 
 			
-			For each ($value; $values)
-				
-				If ($value.name=Null:C1517)
-					
-					// Deleted / Obfuscated constant
-					$es:=ds:C1482.constants.query("ID = :1"; $value.ID)
-					
-					If ($es.length>0)
-						
-						$es.drop()
-						
-					End if 
-					
-				Else 
-					
-					$constants.push(New object:C1471(\
-						"ID"; $value.ID; \
-						"theme"; $name; \
-						"name"; $value.name; \
-						"value"; $value.value; \
-						"obsolete"; Position:C15("_o_"; String:C10($value.name))=1))
-					
-				End if 
-				
-			End for each 
-		End for each 
-		
-		$ds_:=ds:C1482.constants.fromCollection($constants)
-		
-	End if 
-End if 
+			$constants.push({\
+				ID: $k.id; \
+				name: $k.name; \
+				theme: $theme; \
+				value: $k.value; \
+				obsolete: Position:C15("_o_"; String:C10($k.name))=1\
+				})
+			
+		End if 
+	End for each 
+End for each 
+
+ds:C1482.constants.fromCollection($constants)
