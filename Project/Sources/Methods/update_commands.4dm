@@ -8,16 +8,17 @@
 // Retrieve the list of command names
 // ----------------------------------------------------
 var $theme : Text
-var $cmd; $indx; $info : Integer
+var $cmd; $count; $indx; $info : Integer
 var $o; $syntax : Object
 var $c; $commands; $obsoletes; $resnames : Collection
 var $es; $sel : 4D:C1709.EntitySelection
-var $4d; $wp : 4D:C1709.Folder
 
 $commands:=[]
 $obsoletes:=[]
 
 $es:=ds:C1482.commands.all()
+
+$count:=$es.length
 
 // Mark:-Get commands
 Repeat 
@@ -93,100 +94,109 @@ For each ($o; $es)
 End for each 
 
 // Mark:-Add syntax and description
-$4d:=Folder:C1567(Get 4D folder:C485(-1); fk platform path:K87:2).file("en.lproj/4DSyntaxEN.xlf")
-$wp:=Folder:C1567(Get 4D folder:C485(-1); fk platform path:K87:2).file("en.lproj/4DSyntaxWPEN.xlf")
 
-If (Asserted:C1132($4d.exists; "file not found"))
+// Get INTL 4D Syntax
+$syntax:=xml_fileToObject(Folder:C1567(Get 4D folder:C485(-1); fk platform path:K87:2).file("en.lproj/4DSyntaxEN.xlf").platformPath)
+
+If ($syntax.success)
 	
-	// Get INTL 4D Syntax
-	$syntax:=xml_fileToObject($4d.platformPath)
+	$c:=$syntax.value.xliff.file.body.group["trans-unit"]
+	
+	// Get INTL Write Pro Syntax
+	$syntax:=xml_fileToObject(Folder:C1567(Get 4D folder:C485(-1); fk platform path:K87:2).file("en.lproj/4DSyntaxWPEN.xlf").platformPath)
 	
 	If ($syntax.success)
 		
-		$c:=$syntax.value.xliff.file.body.group["trans-unit"]
+		$c:=$c.combine($syntax.value.xliff.file.body.group["trans-unit"])
 		
-		If ($wp.exists)
+	End if 
+	
+	$resnames:=$c.extract("resname")
+	
+	For each ($o; $commands)
+		
+		$indx:=$resnames.indexOf("cmd"+String:C10($o.ID))
+		
+		If ($indx#-1)
 			
-			// Get INTL Write Pro Syntax
-			$syntax:=xml_fileToObject($wp.platformPath)
+			$o.syntax:=$c[$indx].target.$
 			
-			If ($syntax.success)
+			$indx:=$resnames.indexOf("desc"+String:C10($o.ID))
+			
+			If ($indx#-1)
 				
-				$c:=$c.combine($syntax.value.xliff.file.body.group["trans-unit"])
+				$o.description:=$c[$indx].target.$
+				
+				// Some corrections
+				$o.description:=str_trim($o.description)
+				$o.description:=Replace string:C233($o.description; "  "; " ")
+				$o.description:=Replace string:C233($o.description; "<em>"; "")
+				$o.description:=Replace string:C233($o.description; "</em>"; "")
+				
+				//%W-533.1
+				$o.description[[1]]:=Uppercase:C13($o.description[[1]])
+				//%W+533.1
 				
 			End if 
 		End if 
 		
-		$resnames:=$c.extract("resname")
-		
-		For each ($o; $commands)
+		If (Bool:C1537($o.threadsafe))
 			
-			$indx:=$resnames.indexOf("cmd"+String:C10($o.ID))
+			$o.comment:="Thread safe"
+			
+		Else 
+			
+			$o.comment:=""
+			
+		End if 
+	End for each 
+	
+	For each ($o; $obsoletes)
+		
+		$indx:=$resnames.indexOf("cmd"+String:C10($o.ID))
+		
+		If ($indx#-1)
+			
+			$o.syntax:=$c[$indx].target.$
+			
+			$indx:=$resnames.indexOf("desc"+String:C10($o.ID))
 			
 			If ($indx#-1)
 				
-				$o.syntax:=$c[$indx].target.$
+				$o.description:=$c[$indx].target.$
 				
-				$indx:=$resnames.indexOf("desc"+String:C10($o.ID))
+				// Some corrections
+				$o.description:=str_trim($o.description)
+				$o.description:=Replace string:C233($o.description; "  "; " ")
+				$o.description:=Replace string:C233($o.description; "<em>"; "")
+				$o.description:=Replace string:C233($o.description; "</em>"; "")
 				
-				If ($indx#-1)
-					
-					$o.description:=$c[$indx].target.$
-					
-					// Some corrections
-					$o.description:=str_trim($o.description)
-					$o.description:=Replace string:C233($o.description; "  "; " ")
-					$o.description:=Replace string:C233($o.description; "<em>"; "")
-					$o.description:=Replace string:C233($o.description; "</em>"; "")
-					
-					//%W-533.1
-					$o.description[[1]]:=Uppercase:C13($o.description[[1]])
-					//%W+533.1
-					
-				End if 
-			End if 
-			
-			If (Bool:C1537($o.threadsafe))
-				
-				$o.comment:="Thread safe"
-				
-			Else 
-				
-				$o.comment:=""
+				//%W-533.1
+				$o.description[[1]]:=Uppercase:C13($o.description[[1]])
+				//%W+533.1
 				
 			End if 
-		End for each 
-		
-		For each ($o; $obsoletes)
-			
-			$indx:=$resnames.indexOf("cmd"+String:C10($o.ID))
-			
-			If ($indx#-1)
-				
-				$o.syntax:=$c[$indx].target.$
-				
-				$indx:=$resnames.indexOf("desc"+String:C10($o.ID))
-				
-				If ($indx#-1)
-					
-					$o.description:=$c[$indx].target.$
-					
-					// Some corrections
-					$o.description:=str_trim($o.description)
-					$o.description:=Replace string:C233($o.description; "  "; " ")
-					$o.description:=Replace string:C233($o.description; "<em>"; "")
-					$o.description:=Replace string:C233($o.description; "</em>"; "")
-					
-					//%W-533.1
-					$o.description[[1]]:=Uppercase:C13($o.description[[1]])
-					//%W+533.1
-					
-				End if 
-			End if 
-		End for each 
-	End if 
+		End if 
+	End for each 
 End if 
 
 // Mark:-Update data
 ds:C1482.commands.fromCollection($commands)
 ds:C1482.obsoletes.fromCollection($obsoletes)
+
+If (ds:C1482.commands.all().length#$count)
+	
+	var $file : 4D:C1709.File
+	var $t : Text
+	$file:=File:C1566("/PACKAGE/commands "+Replace string:C233(String:C10(Current date:C33; Internal date short:K1:7); "/"; "-")+".txt")
+	
+	If ($file.exists)
+		
+		$file.delete()
+		
+	End if 
+	
+	$t:=File:C1566("/RESOURCES/export_commands.4si").getText()
+	EXPORT DATA:C666($file.platformPath; $t)
+	
+End if 
